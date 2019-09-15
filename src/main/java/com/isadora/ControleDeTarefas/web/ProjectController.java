@@ -7,16 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/project")
@@ -29,10 +22,10 @@ public class ProjectController {
     private MapValidationErrorService mapValidationErrorService;
 
     @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result){
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationServive(result);
-        if(errorMap!=null){
+        if (errorMap != null) {
             return errorMap;
         }
 
@@ -40,4 +33,22 @@ public class ProjectController {
         return new ResponseEntity<Project>(project, HttpStatus.CREATED);
     }
 
+    @GetMapping("/{projectId}")
+    public ResponseEntity<?> getProjectById(@PathVariable String projectId) {
+        Project project = projectService.findByProjectIdentifier(projectId.toUpperCase());
+
+        return new ResponseEntity<Project>(project, HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public Iterable<Project> getAllPojects() {
+        return projectService.findAllProjects();
+    }
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<?> deleteProject(@PathVariable String projectId) {
+        projectService.deleteProjectByIdentifier(projectId.toUpperCase());
+
+        return new ResponseEntity<String>("Projeto '" + projectId+"' deletado.", HttpStatus.OK);
+    }
 }
