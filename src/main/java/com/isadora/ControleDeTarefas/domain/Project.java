@@ -29,6 +29,8 @@ public class Project {
     private Date created_at;
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_at;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")//um projeto pertence a um backlog, eh carregado junto com a classe (uma query so), cascade - se deletar projeto, deleta backlog e task
+    private Backlog backlog;
 
     public Project() {
     }
@@ -105,5 +107,13 @@ public class Project {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
     }
 }
