@@ -2,6 +2,7 @@ package com.isadora.ControleDeTarefas.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -27,6 +28,11 @@ public class ProjectTask {
     private Integer priority;
 
     //manyTOne with backlog
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH) //refresh no backlog
+    @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Backlog backlog;
+
     @Column(updatable = false)
     private String projectIdentifier;
 
@@ -131,6 +137,14 @@ public class ProjectTask {
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
     }
 
     @Override
