@@ -1,6 +1,7 @@
 package com.isadora.ControleDeTarefas.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -30,6 +31,7 @@ public class Project {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_at;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")//um projeto pertence a um backlog, eh carregado junto com a classe (uma query so), cascade - se deletar projeto, deleta backlog e task
+    @JsonIgnore
     private Backlog backlog;
 
     public Project() {
