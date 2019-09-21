@@ -15,7 +15,7 @@ public class ProjectTask {
     @GeneratedValue(strategy= GenerationType.IDENTITY)//persistencia responsavel por gerar o id (auto incremento nesse caso)
     private Long id;
 
-    @Column(updatable = false)
+    @Column(updatable = false, unique = true)
     private String projectSequence;
 
     @NotBlank(message = "Necessário incluir um resumo.")
@@ -28,7 +28,7 @@ public class ProjectTask {
     private Integer priority;
 
     //manyTOne with backlog
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH) //refresh no backlog
+    @ManyToOne(fetch = FetchType.EAGER) //refresh no backlog
     @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
     @JsonIgnore
     private Backlog backlog;
@@ -36,13 +36,13 @@ public class ProjectTask {
     @Column(updatable = false)
     private String projectIdentifier;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date create_at;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date update_at;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dueDate;
 
 

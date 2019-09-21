@@ -21,7 +21,7 @@ public class Backlog {
     @JsonIgnore //solucao problema de recursao
     private Project project;
     //oneToMany projectTasks
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "backlog") //deletar o backlog, deleta project task
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "backlog", orphanRemoval = true) 
     private List<ProjectTask> projectTasks = new ArrayList<>();
 
 

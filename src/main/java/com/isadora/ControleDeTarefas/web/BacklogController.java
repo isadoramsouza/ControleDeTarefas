@@ -39,4 +39,31 @@ public class BacklogController {
         return projectTaskService.findBacklogById(backlog_id);
     }
 
+    @GetMapping("/{backlog_id}/{pt_id}")
+    public ResponseEntity<?> getProjectTask(@PathVariable String backlog_id, @PathVariable String pt_id) {
+       ProjectTask projectTask = projectTaskService.findPTByProjectSequence(backlog_id,pt_id);
+
+       return new ResponseEntity<ProjectTask>(projectTask, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/{backlog_id}/{pt_id}")
+    public ResponseEntity<?> updateProjectTask(@Valid @RequestBody ProjectTask projectTask, BindingResult result, @PathVariable String backlog_id, @PathVariable String pt_id) {
+
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationServive(result);
+        if (errorMap != null) {
+            return errorMap;
+        }
+
+        ProjectTask projectTask1 = projectTaskService.uptadeByPrjectSequence(projectTask, backlog_id, pt_id);
+        return new ResponseEntity<ProjectTask>(projectTask1, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{backlog_id}/{pt_id}")
+    public ResponseEntity<?> deleteProjectTask(@PathVariable String backlog_id, @PathVariable String pt_id) {
+        projectTaskService.deletePTByProjectSequence(backlog_id,pt_id);
+        return new ResponseEntity<String>("Tarefa "+pt_id+" deletada.", HttpStatus.OK);
+
+    }
+
+
 }
